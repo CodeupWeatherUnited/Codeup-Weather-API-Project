@@ -3,18 +3,18 @@
 
     function buildCurrentConditionsHTML(todays) {
         var html = "";
-        var $currentConditionsContainer = $("#current-conditions-container");
+        var $currentConditionsContainer = $(".current-conditions-container");
 
         html += '<h3 class="location-name">' + todays.current_location + '</h3>';
         html += '<ul class="current-conditions-list">';
         html += '<li class="min-max-temps">' + todays.high + '&deg;/' + todays.low + '&deg;</li>';
         html += '<li class="conditions-icon"><img src="' + todays.icon + '" alt="..."></li>';
-        //     <li class="current-description">Clouds: overcast clouds</li>
-        //     <li class="humidity">52</li>
-        //     <li class="wind">6</li>
-        //     <li class="pressure">1025.93</li>
-        //     </ul>
-        $currentConditionsContainer.html(html);
+        html += '<li class="current-description"><strong>' + todays.general_info + ':</strong> ' +todays.specific_info+'</li>';
+        html += '<li class="humidity"><strong>Humidity:</strong> '+todays.humidity+'</li>';
+        html += '<li class="wind"><strong>Wind:</strong> '+todays.wind+'</li>';
+        html += '<li class="pressure"><strong>Pressure:</strong> '+todays.pressure+'</li>';
+        html += '</ul>';
+       $currentConditionsContainer.html(html);
     }
 
     $(document).ready(function () {
@@ -32,6 +32,7 @@
             icon: "",
             general_info: '',
             specific_info: '',
+            humidity: 0,
             wind: 0,
             pressure: 0
         };
@@ -48,6 +49,7 @@
             todays.icon = "http://openweathermap.org/img/w/" + weatherData.weather[0].icon + ".png";
             todays.general_info = weatherData.weather[0].main;
             todays.specific_info = weatherData.weather[0].description;
+            todays.humidity = weatherData.main.humidity;
             todays.wind = weatherData.wind.speed;
             todays.pressure = weatherData.main.pressure;
 

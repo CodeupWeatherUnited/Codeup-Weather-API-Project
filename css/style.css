@@ -1,0 +1,13 @@
+.current-conditions-list{
+    list-style-type: none;
+    padding-left: 0;
+
+}
+
+.current-conditions-list>li{
+    text-align: center;
+}
+.current-conditions-container{
+    width: 20%;
+    background-color: #F2F2F2;
+}
