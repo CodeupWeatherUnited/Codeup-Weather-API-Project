@@ -22,7 +22,15 @@
         var weatherRequest = $.get("http://api.openweathermap.org/data/2.5/weather", requestOptions);
 
         weatherRequest.done(function (weatherData) {
-            console.log(weatherData);
+            todays.high = weatherData.main.temp_max;
+            todays.low = weatherData.main.temp_min;
+            todays.current_temp = weatherData.main.temp;
+            todays.icon = "http://openweathermap.org/img/w/" + weatherData.weather[0].icon + ".png";
+            todays.general_info = weatherData.weather[0].main;
+            todays.specific_info = weatherData.weather[0].description;
+            todays.wind = weatherData.wind.speed;
+            todays.pressure = weatherData.main.pressure;
+
         });
 
         weatherRequest.fail(function () {
