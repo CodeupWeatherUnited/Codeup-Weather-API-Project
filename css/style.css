@@ -26,6 +26,10 @@ li.min-max-temps {
     font-size: 1.5em;
     margin-bottom: -0.25em;
 }
+#map-container{
+    width: 90%;
+    margin: 1em auto;
+}
 
 .conditions-icon {
     margin-bottom: 0;
