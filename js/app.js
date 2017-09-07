@@ -5,15 +5,16 @@
         var html = "";
         var $currentConditionsContainer = $(".current-conditions-container");
 
-        html += '<h3 class="location-name">' + todays.current_location + '</h3>';
+        html += '<h2 class="location-name">' + todays.current_location + '</h2>';
+        html += '<div class="conditions-list-container">';
         html += '<ul class="current-conditions-list">';
-        html += '<li class="min-max-temps">' + todays.high + '&deg;/' + todays.low + '&deg;</li>';
+        html += '<li class="min-max-temps">' + todays.high + '&deg;/ ' + todays.low + '&deg;</li>';
         html += '<li class="conditions-icon"><img src="' + todays.icon + '" alt="..."></li>';
         html += '<li class="current-description"><strong>' + todays.general_info + ':</strong> ' +todays.specific_info+'</li>';
         html += '<li class="humidity"><strong>Humidity:</strong> '+todays.humidity+'</li>';
         html += '<li class="wind"><strong>Wind:</strong> '+todays.wind+'</li>';
         html += '<li class="pressure"><strong>Pressure:</strong> '+todays.pressure+'</li>';
-        html += '</ul>';
+        html += '</ul></div>';
        $currentConditionsContainer.html(html);
     }
 
@@ -36,8 +37,6 @@
             wind: 0,
             pressure: 0
         };
-
-        var current_location = "";
 
         var weatherRequest = $.get("http://api.openweathermap.org/data/2.5/weather", requestOptions);
 
