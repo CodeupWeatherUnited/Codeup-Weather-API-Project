@@ -18,15 +18,7 @@
     }
 
     $(document).ready(function () {
-        var requestOptions = {
-                APPID: "1f8cf5283d525af161fcfbe1a348a256",
-                q: "San Antonio, TX",
-                units: "imperial",
-                cnt: 3
-        };
-
         var todays = {
-            current_location: '',
             high: 0,
             low: 0,
             current_temp: 0,
@@ -38,35 +30,47 @@
             pressure: 0
         };
 
-        var weatherRequest = $.get("http://api.openweathermap.org/data/2.5/forecast", requestOptions);
+        $("#lat-lon-search").on('click', function () {
+            var latitude = $('#latitude').val();
+            var longitude = $('#longitude').val();
 
-        weatherRequest.done(function (weatherData) {
-            var threeDayCast = weatherData.list;
+            var requestOptions = {
+                APPID: "1f8cf5283d525af161fcfbe1a348a256",
+                lat: latitude,
+                lon: longitude,
+                units: "imperial",
+                cnt: 3
+            };
+
+            var weatherRequest = $.get("http://api.openweathermap.org/data/2.5/forecast", requestOptions);
+
+            weatherRequest.done(function (weatherData) {
+                var threeDayCast = weatherData.list;
 
 
-            $(".current-conditions-container").html('<h2 class="location-name">' + weatherData.city.name + '</h2>');
+                $(".current-conditions-container").html('<h2 class="location-name">' + weatherData.city.name + '</h2>');
 
-            for ( var i = 0; i<threeDayCast.length; i++) {
-                threeDayCast[i];
+                for ( var i = 0; i<threeDayCast.length; i++) {
+                    threeDayCast[i];
 
-                todays.current_location = threeDayCast[i].name;
-                todays.high = Math.round(threeDayCast[i].main.temp_max);
-                todays.low = Math.round(threeDayCast[i].main.temp_min);
-                todays.current_temp = threeDayCast[i].main.temp;
-                todays.icon = "http://openweathermap.org/img/w/" + threeDayCast[i].weather[0].icon + ".png";
-                todays.general_info = threeDayCast[i].weather[0].main;
-                todays.specific_info = threeDayCast[i].weather[0].description;
-                todays.humidity = threeDayCast[i].main.humidity;
-                todays.wind = threeDayCast[i].wind.speed;
-                todays.pressure = threeDayCast[i].main.pressure;
+                    todays.high = Math.round(threeDayCast[i].main.temp_max);
+                    todays.low = Math.round(threeDayCast[i].main.temp_min);
+                    todays.current_temp = threeDayCast[i].main.temp;
+                    todays.icon = "http://openweathermap.org/img/w/" + threeDayCast[i].weather[0].icon + ".png";
+                    todays.general_info = threeDayCast[i].weather[0].main;
+                    todays.specific_info = threeDayCast[i].weather[0].description;
+                    todays.humidity = threeDayCast[i].main.humidity;
+                    todays.wind = threeDayCast[i].wind.speed;
+                    todays.pressure = threeDayCast[i].main.pressure;
 
-                buildCurrentConditionsHTML(todays);
-            }
-            console.log(weatherData);
-        });
+                    buildCurrentConditionsHTML(todays);
+                }
+            });
 
-        weatherRequest.fail(function () {
-            alert("Failed to get the current weather information for your area");
+            weatherRequest.fail(function () {
+                $(".current-conditions-container").html("");
+                alert("Failed to get the current weather information for your area");
+            });
         });
     });
 })();
