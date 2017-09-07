@@ -5,7 +5,6 @@
         var html = "";
         var $currentConditionsContainer = $(".current-conditions-container");
 
-        html += '<h2 class="location-name">' + todays.current_location + '</h2>';
         html += '<div class="conditions-list-container">';
         html += '<ul class="current-conditions-list">';
         html += '<li class="min-max-temps">' + todays.high + '&deg;/ ' + todays.low + '&deg;</li>';
@@ -15,14 +14,15 @@
         html += '<li class="wind"><strong>Wind:</strong> '+todays.wind+'</li>';
         html += '<li class="pressure"><strong>Pressure:</strong> '+todays.pressure+'</li>';
         html += '</ul></div>';
-       $currentConditionsContainer.html(html);
+       $currentConditionsContainer.append(html);
     }
 
     $(document).ready(function () {
         var requestOptions = {
                 APPID: "1f8cf5283d525af161fcfbe1a348a256",
                 q: "San Antonio, TX",
-                units: "imperial"
+                units: "imperial",
+                cnt: 3
         };
 
         var todays = {
@@ -38,21 +38,31 @@
             pressure: 0
         };
 
-        var weatherRequest = $.get("http://api.openweathermap.org/data/2.5/weather", requestOptions);
+        var weatherRequest = $.get("http://api.openweathermap.org/data/2.5/forecast", requestOptions);
 
         weatherRequest.done(function (weatherData) {
-            todays.current_location = weatherData.name;
-            todays.high = Math.round(weatherData.main.temp_max);
-            todays.low = Math.round(weatherData.main.temp_min);
-            todays.current_temp = weatherData.main.temp;
-            todays.icon = "http://openweathermap.org/img/w/" + weatherData.weather[0].icon + ".png";
-            todays.general_info = weatherData.weather[0].main;
-            todays.specific_info = weatherData.weather[0].description;
-            todays.humidity = weatherData.main.humidity;
-            todays.wind = weatherData.wind.speed;
-            todays.pressure = weatherData.main.pressure;
+            var threeDayCast = weatherData.list;
 
-            buildCurrentConditionsHTML(todays);
+
+            $(".current-conditions-container").html('<h2 class="location-name">' + weatherData.city.name + '</h2>');
+
+            for ( var i = 0; i<threeDayCast.length; i++) {
+                threeDayCast[i];
+
+                todays.current_location = threeDayCast[i].name;
+                todays.high = Math.round(threeDayCast[i].main.temp_max);
+                todays.low = Math.round(threeDayCast[i].main.temp_min);
+                todays.current_temp = threeDayCast[i].main.temp;
+                todays.icon = "http://openweathermap.org/img/w/" + threeDayCast[i].weather[0].icon + ".png";
+                todays.general_info = threeDayCast[i].weather[0].main;
+                todays.specific_info = threeDayCast[i].weather[0].description;
+                todays.humidity = threeDayCast[i].main.humidity;
+                todays.wind = threeDayCast[i].wind.speed;
+                todays.pressure = threeDayCast[i].main.pressure;
+
+                buildCurrentConditionsHTML(todays);
+            }
+            console.log(weatherData);
         });
 
         weatherRequest.fail(function () {
